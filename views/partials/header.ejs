@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title + ' | Resume Scout' : 'Resume Scout - AI Resume Analyzer' %></title>
+    <meta name="description" content="AI-powered resume analyzer and job matching platform">
+    <meta name="keywords" content="resume, AI, job matching, career, hiring">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E3A8A',
+                        secondary: '#3B82F6',
+                        background: '#FFFFFF',
+                        text: '#1F2937',
+                        accent: '#E5E7EB'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="min-h-screen flex flex-col bg-background text-text">
+    <!-- Navigation -->
+    <nav class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a href="/" class="flex items-center space-x-2">
+                    <span class="text-2xl font-bold">Resume Scout</span>
+                </a>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="/" class="hover:text-secondary transition-colors">Home</a>
+                    <a href="/about" class="hover:text-secondary transition-colors">About</a>
+                    <a href="/upload-resume" class="hover:text-secondary transition-colors">Upload Resume</a>
+                    <a href="/job-matching" class="hover:text-secondary transition-colors">Job Matching</a>
+                    <a href="/chatbot" class="hover:text-secondary transition-colors">AI Assistant</a>
+                    <a href="/contact" class="hover:text-secondary transition-colors">Contact</a>
+                    <a href="/faq" class="hover:text-secondary transition-colors">FAQ</a>
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <div class="relative group">
+                            <a href="/profile" class="flex items-center space-x-2 hover:text-secondary transition-colors">
+                                <span class="font-medium"><%= user.name %></span>
+                                <img src="<%= user.profile_picture || '/images/default-avatar.png' %>" alt="Profile" class="w-8 h-8 rounded-full object-cover border-2 border-white">
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <a href="/auth/login" class="hover:text-secondary transition-colors">Login</a>
+                        <a href="/auth/register" class="bg-secondary hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors">Register</a>
+                    <% } %>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="md:hidden hidden mt-4 pb-2">
+                <div class="flex flex-col space-y-3">
+                    <a href="/" class="hover:text-secondary transition-colors">Home</a>
+                    <a href="/about" class="hover:text-secondary transition-colors">About</a>
+                    <a href="/upload-resume" class="hover:text-secondary transition-colors">Upload Resume</a>
+                    <a href="/job-matching" class="hover:text-secondary transition-colors">Job Matching</a>
+                    <a href="/chatbot" class="hover:text-secondary transition-colors">AI Assistant</a>
+                    <a href="/contact" class="hover:text-secondary transition-colors">Contact</a>
+                    <a href="/faq" class="hover:text-secondary transition-colors">FAQ</a>
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <hr class="border-gray-700">
+                        <a href="/profile" class="flex items-center space-x-2 hover:text-secondary transition-colors">
+                            <span class="font-medium">My Profile</span>
+                            <img src="<%= user.profile_picture || '/images/default-avatar.png' %>" alt="Profile" class="w-6 h-6 rounded-full object-cover border-2 border-white">
+                        </a>
+                        <a href="/auth/logout" class="hover:text-secondary transition-colors">Logout</a>
+                    <% } else { %>
+                        <hr class="border-gray-700">
+                        <a href="/auth/login" class="hover:text-secondary transition-colors">Login</a>
+                        <a href="/auth/register" class="bg-secondary hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors inline-block">Register</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="flex-grow"> 

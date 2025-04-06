@@ -1,0 +1,155 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">Contact Us</h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            Have questions or feedback? Get in touch with our team.
+        </p>
+    </div>
+</section>
+
+<!-- Contact Form & Info Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <h2 class="text-2xl font-bold text-primary mb-6">Send Us a Message</h2>
+                
+                <!-- Message Status (hidden initially) -->
+                <div id="contact-message" class="hidden mb-6 p-4 rounded-lg border-l-4"></div>
+                
+                <!-- Simple form without JavaScript handling -->
+                <form action="/contact/simple-submit" method="POST">
+                    <div class="mb-6">
+                        <label for="name" class="block text-gray-700 mb-2">Your Name</label>
+                        <input type="text" id="name" name="name" 
+                            class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                            placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" 
+                            class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                            placeholder="john.doe@example.com" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="message" class="block text-gray-700 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="6" 
+                            class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                            placeholder="Type your message here..." required></textarea>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-800 hover:bg-blue-900 text-white py-3 px-8 rounded-lg">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Contact Info -->
+            <div>
+                <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Contact Information</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="text-secondary text-2xl mr-4">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Our Address</h3>
+                                <p class="text-gray-600">Gujarat, India</p>
+                               
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-secondary text-2xl mr-4">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Email Us</h3>
+                                <p class="text-gray-600">info@resumescout.com</p>
+                                <p class="text-gray-600">support@resumescout.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-secondary text-2xl mr-4">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Call Us</h3>
+                                <p class="text-gray-600">+91 9876543210</p>
+                               
+                            </div>
+                        </div>
+                        <!--
+                        <div class="flex items-start">
+                            <div class="text-secondary text-2xl mr-4">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Business Hours</h3>
+                                <p class="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
+                                <p class="text-gray-600">Saturday & Sunday: Closed</p>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section (Optional) --> <!--
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-primary mb-8">Find Us</h2>
+        
+        <div class="bg-white rounded-lg shadow-md p-4">
+           
+            <div class="bg-gray-200 h-80 rounded-lg flex items-center justify-center">
+                <p class="text-gray-600">
+                    <i class="fas fa-map-marker-alt text-secondary text-4xl mb-4 block"></i>
+                    Map placeholder - Google Maps would be integrated here
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+
+<!-- Script to display URL parameter messages -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorMsg = urlParams.get('error');
+        const successMsg = urlParams.get('success');
+        
+        // Get message container
+        const messageContainer = document.getElementById('contact-message');
+        
+        if (messageContainer) {
+            if (errorMsg) {
+                messageContainer.textContent = errorMsg;
+                messageContainer.classList.remove('hidden');
+                messageContainer.classList.add('bg-red-100', 'text-red-700', 'border-red-500');
+            } else if (successMsg) {
+                messageContainer.textContent = successMsg;
+                messageContainer.classList.remove('hidden');
+                messageContainer.classList.add('bg-green-100', 'text-green-700', 'border-green-500');
+            }
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %> 

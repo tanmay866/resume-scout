@@ -1,0 +1,136 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">Job Matching</h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            Find the best candidates for your job description using our AI-powered matching system.
+        </p>
+    </div>
+</section>
+
+<!-- Job Matching Form Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="bg-white rounded-lg shadow-md p-8 mb-12">
+            <h2 class="text-2xl font-bold text-primary mb-6">Enter Job Description</h2>
+            
+            <form id="job-matching-form" action="/job-matching" method="POST">
+                <div class="mb-6">
+                    <label for="jobDescription" class="block text-gray-700 mb-2">Job Description</label>
+                    <textarea id="jobDescription" name="jobDescription" rows="8" 
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                        placeholder="Enter the job description here..."></textarea>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn-primary py-3 px-8 rounded-lg">
+                        Find Matching Candidates
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Results Section (hidden initially, shown after form submission) -->
+        <div id="job-match-results" class="hidden">
+            <h2 class="text-2xl font-bold text-primary mb-6">Matching Candidates</h2>
+            
+            <!-- Results will be loaded dynamically via JavaScript -->
+            <div class="text-center text-gray-500">
+                <p>Searching for matching candidates...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary mb-4">How Job Matching Works</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our AI-powered job matching algorithm finds the most suitable candidates for your job postings.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-file-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">Analyze Job Description</h3>
+                <p class="text-gray-600">
+                    Our AI analyzes your job description to identify key skills, experience, and requirements.
+                </p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-search text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">Match with Candidates</h3>
+                <p class="text-gray-600">
+                    The system compares the job requirements with candidate profiles in our database.
+                </p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-chart-pie text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">Score and Rank</h3>
+                <p class="text-gray-600">
+                    Candidates are ranked by match percentage using our color-coded scoring system.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Matching Score Legend -->
+<section class="py-16">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <h2 class="text-2xl font-bold text-primary mb-8 text-center">Match Score Legend</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Strong Match -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 rounded-full bg-green-500 mr-4"></div>
+                    <h3 class="text-xl font-bold">Strong Match</h3>
+                </div>
+                <p class="text-gray-600">
+                    75-100% match indicates that the candidate's skills and experience align very well with the job requirements.
+                </p>
+            </div>
+            
+            <!-- Moderate Match -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 rounded-full bg-yellow-500 mr-4"></div>
+                    <h3 class="text-xl font-bold">Moderate Match</h3>
+                </div>
+                <p class="text-gray-600">
+                    50-74% match suggests the candidate has many of the required skills but may be missing some key elements.
+                </p>
+            </div>
+            
+            <!-- Weak Match -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 rounded-full bg-red-500 mr-4"></div>
+                    <h3 class="text-xl font-bold">Weak Match</h3>
+                </div>
+                <p class="text-gray-600">
+                    0-49% match indicates the candidate lacks many of the required skills or experience for the position.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('../partials/footer') %> 

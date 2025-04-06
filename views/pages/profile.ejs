@@ -1,0 +1,307 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">My Profile</h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            Manage your personal information and uploaded resumes
+        </p>
+    </div>
+</section>
+
+<!-- Profile Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <% if (success || error) { %>
+        <div class="mb-8">
+            <% if (success) { %>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                <p><%= success %></p>
+            </div>
+            <% } %>
+            <% if (error) { %>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                <p><%= error %></p>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Picture -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Profile Picture</h2>
+                    
+                    <div class="flex flex-col items-center mb-6">
+                        <div class="w-48 h-48 rounded-full overflow-hidden bg-gray-200 mb-4">
+                            <% if (userData.profile_picture) { %>
+                                <img src="<%= userData.profile_picture %>" alt="Profile Picture" class="w-full h-full object-cover">
+                            <% } else { %>
+                                <img src="/images/default-avatar.png" alt="Default Profile Picture" class="w-full h-full object-cover">
+                            <% } %>
+                        </div>
+                        
+                        <form action="/profile/upload-picture" method="POST" enctype="multipart/form-data" class="w-full">
+                            <div class="mb-4">
+                                <label for="profile_picture" class="block text-gray-700 mb-2">Upload New Picture</label>
+                                <input type="file" id="profile_picture" name="profile_picture" accept="image/*" 
+                                    class="w-full border border-gray-300 rounded p-2">
+                                <p class="text-sm text-gray-500 mt-1">Max file size: 5MB. Formats: JPG, PNG, GIF</p>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors mb-3">
+                                Upload Picture
+                            </button>
+                        </form>
+                        
+                        <% if (userData.profile_picture) { %>
+                        <form action="/profile/remove-picture" method="POST" class="w-full mb-2">
+                            <% if (typeof csrfToken !== 'undefined') { %>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <% } %>
+                            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                Remove Picture
+                            </button>
+                        </form>
+                        <% } %>
+                    </div>
+                </div>
+                
+                <!-- User Stats -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Account Summary</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-bold">Resumes Uploaded</h3>
+                            <p class="text-2xl text-blue-600"><%= resumes ? resumes.length : 0 %></p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold">Member Since</h3>
+                            <p><%= new Date(userData.created_at).toLocaleDateString() %></p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold">Account Type</h3>
+                            <p class="capitalize"><%= userData.role %></p>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-gray-200 mt-4">
+                            <a href="/auth/logout" class="block w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-center transition-colors">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Information -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Profile Information</h2>
+                    
+                    <form action="/profile/update" method="POST">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- Basic Information -->
+                            <div>
+                                <label for="name" class="block text-gray-700 mb-2">Full Name</label>
+                                <input type="text" id="name" name="name" value="<%= userData.name %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    required>
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" value="<%= userData.email %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    required>
+                            </div>
+                            
+                            <div>
+                                <label for="phone" class="block text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" value="<%= userData.phone || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                            
+                            <div>
+                                <label for="location" class="block text-gray-700 mb-2">Location</label>
+                                <input type="text" id="location" name="location" value="<%= userData.location || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    placeholder="City, State, Country">
+                            </div>
+                            
+                            <!-- Professional Information -->
+                            <div>
+                                <label for="job_title" class="block text-gray-700 mb-2">Job Title</label>
+                                <input type="text" id="job_title" name="job_title" value="<%= userData.job_title || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    placeholder="Software Engineer">
+                            </div>
+                            
+                            <div>
+                                <label for="company" class="block text-gray-700 mb-2">Company</label>
+                                <input type="text" id="company" name="company" value="<%= userData.company || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    placeholder="Company Name">
+                            </div>
+                            
+                            <!-- Social Profiles -->
+                            <div>
+                                <label for="website" class="block text-gray-700 mb-2">Website</label>
+                                <input type="url" id="website" name="website" value="<%= userData.website || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    placeholder="https://yourwebsite.com">
+                            </div>
+                            
+                            <div>
+                                <label for="linkedin" class="block text-gray-700 mb-2">LinkedIn Profile</label>
+                                <input type="url" id="linkedin" name="linkedin" value="<%= userData.linkedin || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    placeholder="https://linkedin.com/in/yourusername">
+                            </div>
+                            
+                            <div>
+                                <label for="github" class="block text-gray-700 mb-2">GitHub Profile</label>
+                                <input type="url" id="github" name="github" value="<%= userData.github || '' %>" 
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                    placeholder="https://github.com/yourusername">
+                            </div>
+                        </div>
+                        
+                        <!-- Bio -->
+                        <div class="mb-6">
+                            <label for="bio" class="block text-gray-700 mb-2">Bio</label>
+                            <textarea id="bio" name="bio" rows="4" 
+                                class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                placeholder="Tell us about yourself..."><%= userData.bio || '' %></textarea>
+                        </div>
+                        
+                        <!-- Skills -->
+                        <div class="mb-6">
+                            <label for="skills" class="block text-gray-700 mb-2">Skills (comma separated)</label>
+                            <input type="text" id="skills" name="skills" value="<%= userData.skills || '' %>" 
+                                class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                placeholder="JavaScript, HTML, CSS, Node.js, ...">
+                        </div>
+                        
+                        <div class="text-right">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-lg transition-colors">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Resumes -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary mb-6">My Resumes</h2>
+                    
+                    <% if (resumes && resumes.length > 0) { %>
+                        <div class="border rounded-lg overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Filename
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Uploaded
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <% resumes.forEach(resume => { %>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900"><%= resume.original_filename %></div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                <%= resume.status === 'processed' ? 'bg-green-100 text-green-800' : 
+                                                resume.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                                'bg-red-100 text-red-800' %>">
+                                                <%= resume.status.charAt(0).toUpperCase() + resume.status.slice(1) %>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <%= new Date(resume.uploaded_at).toLocaleDateString() %>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="/candidate/<%= resume.id %>" class="text-blue-600 hover:text-blue-900 mr-3">
+                                                <i class="fas fa-eye mr-1"></i> View
+                                            </a>
+                                            <form action="/profile/resume/delete/<%= resume.id %>" method="POST" class="inline">
+                                                <% if (typeof csrfToken !== 'undefined') { %>
+                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                <% } %>
+                                                <input type="hidden" name="resumeId" value="<%= resume.id %>">
+                                                <button type="submit" class="text-red-600 hover:text-red-800 transition-colors" 
+                                                        onclick="return confirm('Are you sure you want to delete this resume? This action cannot be undone.')">
+                                                    <i class="fas fa-trash-alt mr-1"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <a href="/upload-resume" class="inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                Upload New Resume
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-10">
+                            <div class="text-gray-500 mb-4">You haven't uploaded any resumes yet.</div>
+                            <a href="/upload-resume" class="inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition-colors">
+                                Upload Your First Resume
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle resume deletion forms
+    document.querySelectorAll('form[action^="/profile/resume/delete/"]').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            // The confirmation is already handled by the onclick handler
+            // Just make sure we don't modify that part
+            
+            // For debugging
+            console.log('Form submission detected for resume deletion');
+            console.log('Action:', form.action);
+            
+            // We're allowing the normal form submission to proceed
+        });
+    });
+    
+    // Handle profile picture removal
+    const removePictureForm = document.querySelector('form[action="/profile/remove-picture"]');
+    if (removePictureForm) {
+        removePictureForm.addEventListener('submit', function(e) {
+            // For debugging
+            console.log('Form submission detected for profile picture removal');
+            
+            // We're allowing the normal form submission to proceed
+        });
+    }
+});
+</script>
+
+<%- include('../partials/footer') %> 

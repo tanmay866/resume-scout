@@ -1,0 +1,159 @@
+<%- include('../partials/header') %>
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="container mx-auto px-4 py-20">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0 slide-in">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    Smart AI-Powered Resume Screening for Better Hiring!
+                </h1>
+                <p class="text-xl mb-8">
+                    Our advanced AI-powered platform analyzes resumes, matches them with job descriptions, and helps you find the perfect candidates.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="/upload-resume" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg text-center transition-colors">
+                        Upload Resume
+                    </a>
+                    <a href="/job-matching" class="bg-transparent border-2 border-white hover:bg-white/10 text-white font-medium py-3 px-8 rounded-lg text-center transition-colors">
+                        Start Screening
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center items-center fade-in">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-blue-200 rounded-full opacity-20 scale-125"></div>
+                    <div class="overflow-hidden rounded-full border-4 border-white shadow-xl w-72 h-72 mx-auto">
+                        <img src="/images/jobseeker.jpg" alt="Job Interview" class="w-full h-full object-cover scale-in" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary mb-4">How Resume Scout Works</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our AI-powered platform streamlines the recruitment process in three simple steps.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center custom-card">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-secondary text-2xl font-bold mx-auto mb-4">1</div>
+                <h3 class="text-xl font-bold text-primary mb-2">Upload Resume</h3>
+                <p class="text-gray-600">
+                    Upload candidate resumes in PDF or DOCX format. Our AI will automatically parse and analyze them.
+                </p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center custom-card">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-secondary text-2xl font-bold mx-auto mb-4">2</div>
+                <h3 class="text-xl font-bold text-primary mb-2">AI Analysis</h3>
+                <p class="text-gray-600">
+                    Our advanced AI extracts skills, experience, education, and other key information from resumes.
+                </p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center custom-card">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-secondary text-2xl font-bold mx-auto mb-4">3</div>
+                <h3 class="text-xl font-bold text-primary mb-2">Match Jobs</h3>
+                <p class="text-gray-600">
+                    Enter your job description and find the best-matched candidates ranked by relevance.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary mb-4">Powerful Features</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Resume Scout offers a range of AI-powered features to make your hiring process more efficient.
+            </p>
+        </div>
+        
+        <div class="mb-12 flex justify-center">
+            <div class="relative">
+                <div class="absolute inset-0 bg-blue-50 rounded-full opacity-30 scale-110"></div>
+                <!--<img src="/images/home/matching-transparent.png" alt="AI Recruiting" class="w-64 h-64 object-contain scale-in relative z-10" />-->
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Feature 1: Resume Analysis -->
+            <div class="bg-white p-6 rounded-lg shadow-md custom-card">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-file-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2 text-center">Resume Analysis</h3>
+                <p class="text-gray-600 text-center">
+                    AI-powered parsing extracts key information from resumes automatically.
+                </p>
+            </div>
+            
+            <!-- Feature 2: Job Matching -->
+            <div class="bg-white p-6 rounded-lg shadow-md custom-card">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-briefcase text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2 text-center">Job Matching</h3>
+                <p class="text-gray-600 text-center">
+                    Find the most qualified candidates based on job requirements.
+                </p>
+            </div>
+            
+            <!-- Feature 3: Feedback System -->
+            <div class="bg-white p-6 rounded-lg shadow-md custom-card">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-comment-dots text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2 text-center">Feedback System</h3>
+                <p class="text-gray-600 text-center">
+                    Provide candidates with personalized feedback on their resumes.
+                </p>
+            </div>
+            
+            <!-- Feature 4: Duplicate Detection -->
+            <div class="bg-white p-6 rounded-lg shadow-md custom-card">
+                <div class="feature-icon mx-auto">
+                    <i class="fas fa-copy text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2 text-center">Duplicate Detection</h3>
+                <p class="text-gray-600 text-center">
+                    Identify duplicate resumes to prevent reviewing the same candidate twice.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Hiring Process?</h2>
+        <p class="text-xl mb-8 max-w-3xl mx-auto">
+            Join thousands of companies that use Resume Scout to find the perfect candidates faster and more efficiently.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="/upload-resume" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg text-center transition-colors">
+                Upload Resume
+            </a>
+            <a href="/auth/register" class="bg-transparent border-2 border-white hover:bg-white/10 text-white font-medium py-3 px-8 rounded-lg text-center transition-colors">
+                Create Account
+            </a>
+        </div>
+    </div>
+</section>
+
+<%- include('../partials/footer') %> 

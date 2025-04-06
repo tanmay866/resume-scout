@@ -1,0 +1,185 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4"><%= resume.name || 'Candidate Profile' %></h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            AI-powered resume analysis and job matching
+        </p>
+    </div>
+</section>
+
+<!-- Candidate Profile Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Candidate Info -->
+            <div class="md:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-6">Candidate Information</h2>
+                    
+                    <!-- Basic Info -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-primary mb-4">Basic Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-600">Name:</p>
+                                <p class="font-semibold"><%= resume.name || 'N/A' %></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Email:</p>
+                                <p class="font-semibold"><%= resume.email || 'N/A' %></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Phone:</p>
+                                <p class="font-semibold"><%= resume.phone || 'N/A' %></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Address:</p>
+                                <p class="font-semibold"><%= resume.address || 'N/A' %></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-primary mb-4">Professional Summary</h3>
+                        <p class="text-gray-700">
+                            <%= resume.summary || 'No summary provided.' %>
+                        </p>
+                    </div>
+                    
+                    <!-- Skills -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-primary mb-4">Skills</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <% if (skills && skills.length > 0) { %>
+                                <% skills.forEach(skill => { %>
+                                    <span class="bg-blue-100 text-secondary px-3 py-1 rounded-full text-sm">
+                                        <%= skill %>
+                                    </span>
+                                <% }); %>
+                            <% } else { %>
+                                <p class="text-gray-600">No skills found.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <!-- Other sections would be added here (Experience, Education, etc.) -->
+                </div>
+                
+                <!-- Resume Feedback -->
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-primary">Resume Feedback</h2>
+                        <button id="view-feedback-btn" class="btn-secondary py-2 px-4 rounded-lg">
+                            View Feedback
+                        </button>
+                    </div>
+                    
+                    <div id="feedback-container" class="hidden">
+                        <div class="border-l-4 border-primary pl-4 py-2 mb-4 bg-blue-50">
+                            <p id="feedback-text" class="text-gray-700">Loading feedback...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Match Analysis -->
+            <div>
+                <!-- Match Percentage -->
+                <div class="bg-white rounded-lg shadow-md p-8 mb-8 text-center">
+                    <h3 class="text-xl font-bold text-primary mb-6">Overall Match Score</h3>
+                    
+                    <div class="match-gauge mx-auto mb-6">
+                        <div class="match-gauge-circle"></div>
+                        <div class="match-gauge-inner">
+                            <% 
+                                // Calculate average match score
+                                let avgScore = matches.reduce((sum, match) => sum + match.match_score, 0) / matches.length;
+                                avgScore = Math.round(avgScore);
+                            %>
+                            <%= avgScore %>%
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600">
+                        This score represents the average match across all job matches.
+                    </p>
+                </div>
+                
+                <!-- Job Matches -->
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <h3 class="text-xl font-bold text-primary mb-6">Top Job Matches</h3>
+                    
+                    <% if (matches && matches.length > 0) { %>
+                        <div class="space-y-4">
+                            <% matches.forEach(match => { %>
+                                <div class="border-b border-gray-200 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
+                                    <div class="flex justify-between mb-2">
+                                        <h4 class="font-semibold"><%= match.title %></h4>
+                                        <% 
+                                            let matchClass = 'match-weak';
+                                            if (match.match_score >= 75) {
+                                                matchClass = 'match-strong';
+                                            } else if (match.match_score >= 50) {
+                                                matchClass = 'match-moderate';
+                                            }
+                                        %>
+                                        <span class="<%= matchClass %> text-white px-2 py-1 rounded-full text-xs">
+                                            <%= match.match_score %>% Match
+                                        </span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm"><%= match.company || 'Company Not Specified' %></p>
+                                </div>
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <p class="text-gray-600 text-center">No job matches found.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for feedback functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewFeedbackBtn = document.getElementById('view-feedback-btn');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const feedbackText = document.getElementById('feedback-text');
+        
+        if (viewFeedbackBtn) {
+            viewFeedbackBtn.addEventListener('click', function() {
+                // Toggle feedback container
+                if (feedbackContainer.classList.contains('hidden')) {
+                    // Show feedback container
+                    feedbackContainer.classList.remove('hidden');
+                    
+                    // Fetch feedback from server
+                    fetch('/candidate/<%= resume.id %>/feedback')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success && data.feedback && data.feedback.length > 0) {
+                                // Display feedback
+                                feedbackText.textContent = data.feedback[0].feedback_text;
+                            } else {
+                                feedbackText.textContent = 'No feedback available for this resume.';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching feedback:', error);
+                            feedbackText.textContent = 'Error loading feedback. Please try again.';
+                        });
+                } else {
+                    // Hide feedback container
+                    feedbackContainer.classList.add('hidden');
+                }
+            });
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %> 

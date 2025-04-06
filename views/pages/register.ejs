@@ -1,0 +1,75 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">Register</h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            Create your Resume Scout account
+        </p>
+    </div>
+</section>
+
+<!-- Registration Form Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4 max-w-md">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+                    <span class="block sm:inline"><%= error %></span>
+                </div>
+            <% } %>
+            
+            <form action="/auth/register" method="POST">
+                <div class="mb-6">
+                    <label for="name" class="block text-gray-700 mb-2">Full Name</label>
+                    <input type="text" id="name" name="name" 
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                        placeholder="John Doe" required value="<%= typeof name !== 'undefined' ? name : '' %>">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="email" class="block text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" name="email" 
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                        placeholder="john.doe@example.com" required value="<%= typeof email !== 'undefined' ? email : '' %>">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" name="password" 
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                        placeholder="••••••••" required minlength="8">
+                    <p class="text-sm text-gray-600 mt-1">Password must be at least 8 characters long</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="confirmPassword" class="block text-gray-700 mb-2">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" 
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                        placeholder="••••••••" required minlength="8">
+                </div>
+                
+                <div class="mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terms" name="terms" class="h-4 w-4 text-secondary" required>
+                        <label for="terms" class="ml-2 text-sm text-gray-700">
+                            I agree to the <a href="#" class="text-secondary hover:underline">Terms of Service</a> and <a href="#" class="text-secondary hover:underline">Privacy Policy</a>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full btn-primary py-3 px-4 rounded-lg mb-6">
+                    Create Account
+                </button>
+                
+                <p class="text-center text-gray-700">
+                    Already have an account? 
+                    <a href="/auth/login" class="text-secondary hover:underline">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<%- include('../partials/footer') %> 

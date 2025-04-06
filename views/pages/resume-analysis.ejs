@@ -1,0 +1,403 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">Resume Analysis</h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            Our AI-powered analysis of your resume with detailed insights and suggestions.
+        </p>
+    </div>
+</section>
+
+<!-- Analysis Results Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Basic Info & Overview -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-primary">Overview</h2>
+                        <span id="resume-strength" class="text-white font-bold px-3 py-1 rounded-full">
+                            <span id="strength-score">0</span>/10
+                        </span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">Status</h3>
+                        <div id="resume-status" class="text-white font-medium px-3 py-1 rounded-full text-center"></div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-2">Name</h3>
+                            <p id="resume-name" class="text-gray-600"></p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-2">Contact</h3>
+                            <p id="resume-email" class="text-gray-600"></p>
+                            <p id="resume-phone" class="text-gray-600"></p>
+                            <p id="resume-location" class="text-gray-600"></p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-2">File</h3>
+                            <p id="resume-filename" class="text-gray-600"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Professional Summary</h2>
+                    <p id="professional-summary" class="text-gray-600"></p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Improvement Suggestions</h2>
+                    <ul id="improvement-suggestions" class="list-disc list-inside text-gray-600 space-y-2">
+                        <!-- Suggestions will be added here dynamically -->
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Right Column: Skills, Experience & Education -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Skills</h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">Technical Skills</h3>
+                        <div id="hard-skills" class="flex flex-wrap gap-2">
+                            <!-- Skills will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-3">Soft Skills</h3>
+                        <div id="soft-skills" class="flex flex-wrap gap-2">
+                            <!-- Skills will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Work Experience</h2>
+                    <div id="work-experience" class="space-y-6">
+                        <!-- Work experience will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Education</h2>
+                    <div id="education" class="space-y-6">
+                        <!-- Education will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="mt-12 flex flex-wrap justify-center gap-4">
+            <a href="/job-matching" class="btn-primary py-3 px-6 rounded-lg">
+                Find Matching Jobs
+            </a>
+            <button id="download-pdf" class="btn-secondary py-3 px-6 rounded-lg">
+                Download Analysis
+            </button>
+            <a href="/upload-resume" class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-6 rounded-lg transition-colors">
+                Upload New Resume
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for Resume Analysis -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get resume ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const resumeId = urlParams.get('id');
+    
+    if (!resumeId) {
+        window.location.href = '/upload-resume';
+        return;
+    }
+    
+    // Fetch resume analysis data
+    fetchResumeAnalysis(resumeId);
+    
+    // Download PDF button
+    document.getElementById('download-pdf').addEventListener('click', function() {
+        alert('PDF download functionality will be implemented in the next phase.');
+    });
+    
+    async function fetchResumeAnalysis(resumeId) {
+        try {
+            const response = await fetch(`/api/resume/details/${resumeId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch resume analysis');
+            }
+            
+            const data = await response.json();
+            if (!data.success) {
+                throw new Error(data.message || 'Failed to load resume analysis');
+            }
+            
+            displayResumeAnalysis(data.resume);
+        } catch (error) {
+            console.error('Error fetching resume analysis:', error);
+            alert('Error loading resume analysis: ' + error.message);
+        }
+    }
+    
+    function displayResumeAnalysis(resume) {
+        console.log("Resume data received:", JSON.stringify(resume, null, 2));
+        
+        // Set resume status
+        const statusElement = document.getElementById('resume-status');
+        statusElement.textContent = resume.status.charAt(0).toUpperCase() + resume.status.slice(1);
+        
+        // Set status color
+        if (resume.status === 'processed') {
+            statusElement.classList.add('bg-green-500');
+        } else if (resume.status === 'processing') {
+            statusElement.classList.add('bg-yellow-500');
+        } else if (resume.status === 'error') {
+            statusElement.classList.add('bg-red-500');
+        } else {
+            statusElement.classList.add('bg-gray-500');
+        }
+        
+        // Basic information
+        document.getElementById('resume-name').textContent = resume.name || 'Not specified';
+        document.getElementById('resume-email').textContent = resume.email || 'Not specified';
+        document.getElementById('resume-phone').textContent = resume.phone || 'Not specified';
+        document.getElementById('resume-location').textContent = 
+            (resume.parsed_data && resume.parsed_data.basic_info && resume.parsed_data.basic_info.location) || 
+            resume.location || 
+            'Not specified';
+        document.getElementById('resume-filename').textContent = resume.original_filename || 'Not specified';
+        
+        // Professional summary
+        const summaryText = (resume.parsed_data && resume.parsed_data.professional_summary) || 
+                         resume.summary || 
+                         'No professional summary available.';
+        document.getElementById('professional-summary').textContent = summaryText;
+        
+        // Resume strength
+        const strengthScore = (resume.parsed_data && resume.parsed_data.resume_strength) || 
+                          (resume.resume_strength) || 
+                          0;
+        const strengthElement = document.getElementById('resume-strength');
+        const strengthScoreElement = document.getElementById('strength-score');
+        strengthScoreElement.textContent = strengthScore;
+        
+        if (strengthScore >= 8) {
+            strengthElement.classList.add('bg-green-500');
+        } else if (strengthScore >= 5) {
+            strengthElement.classList.add('bg-yellow-500');
+        } else {
+            strengthElement.classList.add('bg-red-500');
+        }
+        
+        // Improvement suggestions
+        const suggestionsElement = document.getElementById('improvement-suggestions');
+        suggestionsElement.innerHTML = '';
+        
+        const suggestions = resume.parsed_data?.improvement_suggestions || [];
+        if (suggestions && suggestions.length > 0) {
+            suggestions.forEach(suggestion => {
+                const li = document.createElement('li');
+                li.className = 'mb-1';
+                li.textContent = suggestion;
+                suggestionsElement.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.className = 'mb-1';
+            li.textContent = 'Consider adding more specific achievements and metrics to your resume.';
+            suggestionsElement.appendChild(li);
+            
+            const li2 = document.createElement('li'); 
+            li2.className = 'mb-1';
+            li2.textContent = 'Ensure your contact information is up-to-date and professional.';
+            suggestionsElement.appendChild(li2);
+        }
+        
+        // Skills
+        const hardSkillsElement = document.getElementById('hard-skills');
+        hardSkillsElement.innerHTML = '';
+        
+        console.log("Hard skills:", resume.parsed_data?.hard_skills);
+        const hardSkills = resume.parsed_data?.hard_skills || [];
+        if (hardSkills && hardSkills.length > 0) {
+            hardSkills.forEach(skill => {
+                if (!skill) return; // Skip empty skills
+                const span = document.createElement('span');
+                span.className = 'bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2';
+                span.textContent = skill;
+                hardSkillsElement.appendChild(span);
+            });
+        } else {
+            // Show message when no hard skills found
+            const noSkills = document.createElement('p');
+            noSkills.className = 'text-gray-600 italic';
+            noSkills.textContent = 'No technical skills detected in your resume.';
+            hardSkillsElement.appendChild(noSkills);
+        }
+        
+        const softSkillsElement = document.getElementById('soft-skills');
+        softSkillsElement.innerHTML = '';
+        
+        const softSkills = resume.parsed_data?.soft_skills || [];
+        if (softSkills && softSkills.length > 0) {
+            softSkills.forEach(skill => {
+                if (!skill) return; // Skip empty skills
+                const span = document.createElement('span');
+                span.className = 'bg-purple-100 text-purple-800 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2';
+                span.textContent = skill;
+                softSkillsElement.appendChild(span);
+            });
+        } else {
+            // Show message when no soft skills found
+            const noSkills = document.createElement('p');
+            noSkills.className = 'text-gray-600 italic';
+            noSkills.textContent = 'No soft skills detected in your resume.';
+            softSkillsElement.appendChild(noSkills);
+        }
+        
+        // Work experience
+        const experienceElement = document.getElementById('work-experience');
+        experienceElement.innerHTML = '';
+        
+        const experiences = resume.parsed_data?.work_experience || [];
+        if (experiences && experiences.length > 0) {
+            experiences.forEach(exp => {
+                if (!exp) return; // Skip empty experiences
+                
+                const div = document.createElement('div');
+                div.className = 'mb-6';
+                
+                const header = document.createElement('div');
+                header.className = 'flex flex-col md:flex-row md:justify-between mb-2';
+                
+                const titleCompany = document.createElement('h3');
+                titleCompany.className = 'text-lg font-semibold text-primary';
+                titleCompany.textContent = `${exp.job_title || 'Position'} | ${exp.company || 'Company'}`;
+                
+                const duration = document.createElement('span');
+                duration.className = 'text-gray-500';
+                duration.textContent = exp.duration || 'Not specified';
+                
+                header.appendChild(titleCompany);
+                header.appendChild(duration);
+                div.appendChild(header);
+                
+                if (exp.responsibilities && exp.responsibilities.length > 0) {
+                    const respTitle = document.createElement('h4');
+                    respTitle.className = 'font-medium text-gray-700 mt-2 mb-1';
+                    respTitle.textContent = 'Responsibilities:';
+                    div.appendChild(respTitle);
+                    
+                    const respList = document.createElement('ul');
+                    respList.className = 'list-disc list-inside text-gray-600 ml-2';
+                    
+                    exp.responsibilities.forEach(resp => {
+                        if (!resp) return; // Skip empty responsibilities
+                        const li = document.createElement('li');
+                        li.textContent = resp;
+                        respList.appendChild(li);
+                    });
+                    
+                    div.appendChild(respList);
+                }
+                
+                if (exp.achievements && exp.achievements.length > 0) {
+                    const achTitle = document.createElement('h4');
+                    achTitle.className = 'font-medium text-gray-700 mt-2 mb-1';
+                    achTitle.textContent = 'Achievements:';
+                    div.appendChild(achTitle);
+                    
+                    const achList = document.createElement('ul');
+                    achList.className = 'list-disc list-inside text-gray-600 ml-2';
+                    
+                    exp.achievements.forEach(ach => {
+                        if (!ach) return; // Skip empty achievements
+                        const li = document.createElement('li');
+                        li.textContent = ach;
+                        achList.appendChild(li);
+                    });
+                    
+                    div.appendChild(achList);
+                }
+                
+                experienceElement.appendChild(div);
+            });
+        } else {
+            const noExp = document.createElement('p');
+            noExp.className = 'text-gray-600';
+            noExp.textContent = 'No work experience information available.';
+            experienceElement.appendChild(noExp);
+        }
+        
+        // Education
+        const educationElement = document.getElementById('education');
+        educationElement.innerHTML = '';
+        
+        console.log("Education data:", resume.parsed_data?.education);
+        const educations = resume.parsed_data?.education || [];
+        if (educations && educations.length > 0 && educations[0]) {
+            educations.forEach(edu => {
+                if (!edu) return; // Skip empty education entries
+                
+                const div = document.createElement('div');
+                div.className = 'mb-4';
+                
+                const header = document.createElement('div');
+                header.className = 'flex flex-col md:flex-row md:justify-between mb-2';
+                
+                const degreeInstitution = document.createElement('h3');
+                degreeInstitution.className = 'text-lg font-semibold text-primary';
+                degreeInstitution.textContent = `${edu.degree || 'Degree'} | ${edu.institution || 'Institution'}`;
+                
+                const date = document.createElement('span');
+                date.className = 'text-gray-500';
+                date.textContent = edu.graduation_date || 'Not specified';
+                
+                header.appendChild(degreeInstitution);
+                header.appendChild(date);
+                div.appendChild(header);
+                
+                if (edu.field_of_study) {
+                    const field = document.createElement('p');
+                    field.className = 'text-gray-600';
+                    field.textContent = `Field of Study: ${edu.field_of_study}`;
+                    div.appendChild(field);
+                }
+                
+                if (edu.gpa) {
+                    const gpa = document.createElement('p');
+                    gpa.className = 'text-gray-600';
+                    gpa.textContent = `GPA: ${edu.gpa}`;
+                    div.appendChild(gpa);
+                }
+                
+                educationElement.appendChild(div);
+            });
+        } else {
+            const noEdu = document.createElement('p');
+            noEdu.className = 'text-gray-600';
+            noEdu.textContent = 'No education information detected in your resume.';
+            educationElement.appendChild(noEdu);
+        }
+        
+        console.log("Finished displaying resume data");
+    }
+});
+</script>
+
+<%- include('../partials/footer') %> 

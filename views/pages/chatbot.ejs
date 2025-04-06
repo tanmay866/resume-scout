@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<div class="container mx-auto px-4 py-10">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-primary mb-6">AI Resume Assistant</h1>
+        
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+            <!-- Chat Header -->
+            <div class="bg-primary text-white px-4 py-3 flex items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-robot text-xl"></i>
+                    <span class="font-semibold">Resume Scout AI</span>
+                </div>
+                <div class="ml-auto text-sm">
+                    <span id="chat-status">Online</span>
+                </div>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="h-96 p-4 overflow-y-auto flex flex-col space-y-4">
+                <div class="flex items-start bot-message">
+                    <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-2 mr-3">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="bg-gray-100 rounded-lg p-3 max-w-md">
+                        <p>Hello! I'm your Resume Scout AI assistant. How can I help you with your resume or job search today?</p>
+                    </div>
+                </div>
+                <!-- Messages will be added here -->
+            </div>
+            
+            <!-- Chat Input -->
+            <div class="border-t border-gray-200 p-4">
+                <form id="chat-form" class="flex items-center">
+                    <input 
+                        id="chat-input" 
+                        type="text" 
+                        placeholder="Type your message here..." 
+                        class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition-colors"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-8 bg-gray-100 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">What can the AI Assistant help with?</h2>
+            <ul class="list-disc list-inside space-y-2">
+                <li>Resume optimization tips and suggestions</li>
+                <li>Job search strategies and advice</li>
+                <li>Interview preparation and common questions</li>
+                <li>Career transition guidance</li>
+                <li>Industry-specific resume formats</li>
+                <li>Help with explaining gaps in employment</li>
+                <li>Cover letter writing assistance</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Socket.io -->
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Custom chatbot CSS -->
+<link rel="stylesheet" href="/css/chatbot.css">
+
+<!-- Custom chatbot JS -->
+<script src="/js/chatbot.js"></script>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,361 @@
+<%- include('../partials/header') %>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-secondary text-white py-12">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-4">Upload Your Resume</h1>
+        <p class="text-xl max-w-2xl mx-auto">
+            Our AI will analyze your resume and match it with suitable job descriptions.
+        </p>
+    </div>
+</section>
+
+<!-- Upload Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4 max-w-3xl">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <form id="upload-form" action="/upload-resume" method="POST" enctype="multipart/form-data">
+                <!-- File Upload Area -->
+                <div class="file-upload-area flex flex-col items-center justify-center p-8 rounded-lg mb-6 cursor-pointer">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-secondary mb-4"></i>
+                    <h3 class="text-xl font-bold text-primary mb-2">Drag & Drop Your Resume</h3>
+                    <p class="text-gray-600 text-center mb-4">
+                        or click to browse files (PDF or DOCX)
+                    </p>
+                    <input type="file" id="resume-file" name="resume" accept=".pdf,.doc,.docx" class="hidden">
+                    <button type="button" id="browse-button" class="btn-secondary py-2 px-4 rounded-lg">
+                        Browse Files
+                    </button>
+                </div>
+                
+                <!-- File Details (Hidden until a file is selected) -->
+                <div id="file-details" class="text-center text-gray-700 mb-6 hidden"></div>
+                
+                <!-- Progress Container (Hidden until upload starts) -->
+                <div class="progress-container hidden mb-6">
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                    <p id="upload-status" class="text-center mt-2">Uploading...</p>
+                </div>
+                
+                <!-- Submit Button (Hidden until a file is selected) -->
+                <div class="text-center">
+                    <button type="submit" class="btn-primary py-2 px-6 rounded-lg hidden">
+                        Analyze Resume
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Upload Guidelines -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-primary mb-6">Resume Upload Guidelines</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-primary mb-3">Supported Formats</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            PDF files (.pdf)
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            Word Documents (.doc, .docx)
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-primary mb-3">Best Practices</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                            Keep file size under 5MB
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                            Ensure text is selectable (not images)
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                            Use standard fonts for better parsing
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary mb-4">What Happens After Upload?</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our AI-powered system processes your resume in three simple steps.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-secondary text-2xl font-bold mx-auto mb-4">1</div>
+                <h3 class="text-xl font-bold text-primary mb-2">AI Analysis</h3>
+                <p class="text-gray-600">
+                    Our AI extracts key information including skills, experience, education, and more.
+                </p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-secondary text-2xl font-bold mx-auto mb-4">2</div>
+                <h3 class="text-xl font-bold text-primary mb-2">Job Matching</h3>
+                <p class="text-gray-600">
+                    The system compares your resume against job descriptions to find the best matches.
+                </p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-secondary text-2xl font-bold mx-auto mb-4">3</div>
+                <h3 class="text-xl font-bold text-primary mb-2">Personalized Feedback</h3>
+                <p class="text-gray-600">
+                    Receive detailed feedback on how to improve your resume for better job matches.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Script for Resume Upload -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadForm = document.getElementById('upload-form');
+        const resumeFile = document.getElementById('resume-file');
+        const fileDetails = document.getElementById('file-details');
+        const submitButton = document.querySelector('button[type="submit"]');
+        const progressContainer = document.querySelector('.progress-container');
+        const progressBar = document.querySelector('.progress');
+        const uploadStatus = document.getElementById('upload-status');
+        const fileUploadArea = document.querySelector('.file-upload-area');
+        const browseButton = document.getElementById('browse-button');
+        
+        // Prevent multiple click events - track if file dialog is open
+        let isFileDialogOpen = false;
+        
+        // Drag and drop functionality
+        fileUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('bg-blue-50', 'border-blue-300', 'border-2', 'border-dashed');
+        });
+        
+        fileUploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('bg-blue-50', 'border-blue-300', 'border-2', 'border-dashed');
+        });
+        
+        fileUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('bg-blue-50', 'border-blue-300', 'border-2', 'border-dashed');
+            
+            if (e.dataTransfer.files.length > 0) {
+                resumeFile.files = e.dataTransfer.files;
+                
+                // Trigger the change event manually
+                const event = new Event('change');
+                resumeFile.dispatchEvent(event);
+            }
+        });
+        
+        // Fix for file explorer reopening issue - separate click handlers
+        fileUploadArea.addEventListener('click', function(e) {
+            // Only open file dialog if click is on the area but not on the button
+            if (e.target !== browseButton && !browseButton.contains(e.target) && !isFileDialogOpen) {
+                isFileDialogOpen = true;
+                resumeFile.click();
+                
+                // Reset flag after dialog closes
+                setTimeout(() => {
+                    isFileDialogOpen = false;
+                }, 1000);
+            }
+        });
+        
+        // Dedicated handler for browse button
+        browseButton.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent the area's click event
+            if (!isFileDialogOpen) {
+                isFileDialogOpen = true;
+                resumeFile.click();
+                
+                // Reset flag after dialog closes
+                setTimeout(() => {
+                    isFileDialogOpen = false;
+                }, 1000);
+            }
+        });
+        
+        // File selection
+        resumeFile.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fileName = file.name;
+                const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                const fileType = file.type;
+                
+                fileDetails.innerHTML = `
+                    <p class="font-medium">${fileName}</p>
+                    <p>${fileSize} | ${fileType}</p>
+                `;
+                
+                fileDetails.classList.remove('hidden');
+                submitButton.classList.remove('hidden');
+            } else {
+                fileDetails.classList.add('hidden');
+                submitButton.classList.add('hidden');
+            }
+        });
+        
+        // Form submission
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (resumeFile.files.length === 0) {
+                alert('Please select a file to upload');
+                return;
+            }
+            
+            const formData = new FormData(this);
+            
+            // Show progress container
+            progressContainer.classList.remove('hidden');
+            submitButton.disabled = true;
+            
+            // Reset progress state
+            progressBar.style.width = '0%';
+            progressBar.style.backgroundColor = '#3B82F6'; // Blue color
+            uploadStatus.textContent = 'Starting upload...';
+            
+            // Ajax request for file upload
+            const xhr = new XMLHttpRequest();
+            
+            xhr.open('POST', '/upload-resume', true);
+            
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    uploadStatus.textContent = 'Uploading... ' + percentComplete + '%';
+                }
+            });
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        
+                        if (response.success) {
+                            uploadStatus.textContent = response.message;
+                            progressBar.style.width = '100%';
+                            progressBar.style.backgroundColor = '#10B981'; // Green color
+                            
+                            // Show processing message
+                            uploadStatus.innerHTML = '<div class="flex items-center"><span class="animate-spin mr-2"><i class="fas fa-circle-notch"></i></span> ' + 
+                                'Resume uploaded successfully. AI analysis in progress...</div>';
+                            
+                            // Poll for status for 60 seconds (check every 3 seconds)
+                            let attempts = 0;
+                            const maxAttempts = 20;
+                            
+                            const checkStatus = function() {
+                                attempts++;
+                                
+                                fetch(`/api/resume/details/${response.resumeId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success && data.resume) {
+                                            const status = data.resume.status;
+                                            
+                                            if (status === 'processed' || status === 'processed_with_errors') {
+                                                // Analysis complete, redirect to results
+                                                uploadStatus.innerHTML = '<div class="text-green-600"><i class="fas fa-check-circle mr-2"></i>Analysis complete! Redirecting to results...</div>';
+                                                
+                                                setTimeout(() => {
+                                                    window.location.href = `/resume-analysis?id=${response.resumeId}`;
+                                                }, 1000);
+                                                
+                                            } else if (status === 'error') {
+                                                // Show error
+                                                progressBar.style.backgroundColor = '#EF4444'; // Red color
+                                                uploadStatus.innerHTML = '<div class="text-red-600"><i class="fas fa-exclamation-circle mr-2"></i>Error analyzing resume. Please try again.</div>';
+                                                submitButton.disabled = false;
+                                                
+                                            } else if (attempts < maxAttempts) {
+                                                // Still processing, check again
+                                                uploadStatus.innerHTML = '<div class="flex items-center"><span class="animate-spin mr-2"><i class="fas fa-circle-notch"></i></span> ' + 
+                                                    `AI analysis in progress (${attempts}/${maxAttempts})...</div>`;
+                                                setTimeout(checkStatus, 3000);
+                                            } else {
+                                                // Too many attempts, redirect anyway
+                                                uploadStatus.innerHTML = '<div class="text-yellow-600"><i class="fas fa-exclamation-triangle mr-2"></i>Analysis taking longer than expected. Redirecting to results page...</div>';
+                                                setTimeout(() => {
+                                                    window.location.href = `/resume-analysis?id=${response.resumeId}`;
+                                                }, 1000);
+                                            }
+                                        } else {
+                                            // API error
+                                            if (attempts < maxAttempts) {
+                                                // Try again
+                                                setTimeout(checkStatus, 3000);
+                                            } else {
+                                                // Give up after max attempts
+                                                uploadStatus.innerHTML = '<div class="text-yellow-600"><i class="fas fa-exclamation-triangle mr-2"></i>Unable to verify analysis status. Redirecting to results page...</div>';
+                                                setTimeout(() => {
+                                                    window.location.href = `/resume-analysis?id=${response.resumeId}`;
+                                                }, 1000);
+                                            }
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error('Error checking resume status:', err);
+                                        if (attempts < maxAttempts) {
+                                            setTimeout(checkStatus, 3000);
+                                        } else {
+                                            // Redirect anyway
+                                            window.location.href = `/resume-analysis?id=${response.resumeId}`;
+                                        }
+                                    });
+                            };
+                            
+                            // Start polling
+                            setTimeout(checkStatus, 3000);
+                            
+                        } else {
+                            throw new Error(response.error || 'Upload failed');
+                        }
+                    } catch (error) {
+                        uploadStatus.innerHTML = '<div class="text-red-600"><i class="fas fa-exclamation-circle mr-2"></i>Error: ' + error.message + '</div>';
+                        progressBar.style.backgroundColor = '#EF4444'; // Red color
+                        submitButton.disabled = false;
+                    }
+                } else {
+                    uploadStatus.innerHTML = '<div class="text-red-600"><i class="fas fa-exclamation-circle mr-2"></i>Error: ' + (xhr.responseText || xhr.statusText) + '</div>';
+                    progressBar.style.backgroundColor = '#EF4444'; // Red color
+                    submitButton.disabled = false;
+                }
+            };
+            
+            xhr.onerror = function() {
+                uploadStatus.innerHTML = '<div class="text-red-600"><i class="fas fa-wifi mr-2"></i>Network error occurred. Please check your connection and try again.</div>';
+                progressBar.style.backgroundColor = '#EF4444'; // Red color
+                submitButton.disabled = false;
+            };
+            
+            xhr.send(formData);
+        });
+    });
+</script>
+
+<%- include('../partials/footer') %> 

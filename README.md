@@ -146,3 +146,34 @@ This project is part of a Second-Year College Project.
 
 ## 👨‍💻 Team
 This project was created by Tanmay, Rudra, Nainil and Tanmay.
+
+## Deployment
+
+### Deploying on Render
+
+Follow these steps to deploy the application on Render:
+
+1. Create a Render account at [render.com](https://render.com/)
+2. Connect your GitHub repository
+3. Create a new Web Service
+   - Select the repository
+   - Set build command: `npm install`
+   - Set start command: `node server.js`
+   - Select "Node" as runtime environment
+   - Choose a plan (Free tier is available)
+
+4. Set the following environment variables:
+   - `PORT`: Render sets this automatically
+   - `DB_HOST`: Your database host (Use a cloud database, not localhost)
+   - `DB_USER`: Your database username
+   - `DB_PASSWORD`: Your database password
+   - `DB_NAME`: Your database name
+   - `SESSION_SECRET`: A secure random string
+   - `NODE_ENV`: Set to "production"
+   - `GEMINI_API_KEY`: Your Google Gemini API key
+
+5. For the database:
+   - Option 1: Use a cloud MySQL database like PlanetScale or AWS RDS
+   - Option 2: Use Render's PostgreSQL service (requires code changes)
+
+Your application should be deployed at `https://your-app-name.onrender.com` once the build completes.

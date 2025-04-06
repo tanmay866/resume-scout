@@ -6,9 +6,16 @@ const dotenv = require('dotenv');
 const http = require('http');
 const socketIo = require('socket.io');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const fs = require('fs');
 
 // Load environment variables
 dotenv.config();
+
+// Make sure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Initialize express app
 const app = express();
@@ -45,6 +52,11 @@ app.use((req, res, next) => {
   console.log(`Session exists: ${!!req.session}`);
   console.log(`User in session: ${req.session && req.session.user ? 'Yes (ID: ' + req.session.user.id + ')' : 'No'}`);
   next();
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
 });
 
 // Import routes

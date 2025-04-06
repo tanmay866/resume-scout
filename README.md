@@ -15,12 +15,41 @@ Resume Scout is a dynamic, fully responsive, and scalable AI-powered Resume Anal
 
 
 
-## 🔹 Tech Stack
-**Frontend:** HTML, CSS (Tailwind CSS), JavaScript  
-**Backend:** Node.js (Express.js)  
-**Database:** MySQL  
-**File Uploads:** Multer (for handling PDF & DOCX uploads)  
-**Authentication:** bcryptjs, express-session  
+**💻 Technical Stack**
+**🖥️ Frontend**
+HTML, CSS (Tailwind CSS)
+JavaScript
+EJS (Embedded JavaScript Templates)
+
+**🛠️ Backend**
+Node.js with Express.js framework
+RESTful API architecture
+
+**🗃️ Database**
+MySQL
+(Used for storing user data, resumes, and analysis results)
+
+**📄 File Processing**
+Multer – Middleware for handling file uploads
+pdf-parse – For extracting text from PDF resumes
+mammoth – For extracting text from DOCX files
+
+**🔐 Authentication**
+bcryptjs – For secure password hashing
+express-session – For session management
+
+**🤖 AI Integration**
+Google Generative AI (Gemini API)
+Resume parsing and skill extraction
+Matching resumes with job descriptions
+
+**🧰 Development Tools**
+nodemon – Auto-restarting development server
+dotenv – Managing environment variables
+
+**🚀 Deployment**
+GitHub – Version control and collaboration
+Local Server Deployment – Runs on http://localhost:3004 
 
 ## ✨ Features
 - **Resume Upload & Analysis**: Upload resumes in PDF or DOCX format for AI-powered analysis

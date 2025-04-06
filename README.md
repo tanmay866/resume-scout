@@ -4,7 +4,16 @@
 Resume Scout is a dynamic, fully responsive, and scalable AI-powered Resume Analyzer Website developed as part of a Second-Year College Project. It includes features such as resume uploads, authentication, and AI-powered job matching.
 
 ## 📸 Screenshots
-(Screenshots will be added once the application is deployed)
+![image](https://github.com/user-attachments/assets/16476c0c-9e94-4248-a2a7-e93850555911)
+![image](https://github.com/user-attachments/assets/bcc25d08-8705-46c2-a1f9-70773d0caaf9)
+![image](https://github.com/user-attachments/assets/ff008df0-7155-4966-b3dd-c3e44cb1b2df)
+![image](https://github.com/user-attachments/assets/e7e44e2e-754e-47bc-88f0-c1d852f087f9)
+![image](https://github.com/user-attachments/assets/b51b5604-dea9-4b30-888f-c620fbf729c8)
+
+
+
+
+
 
 ## 🔹 Tech Stack
 **Frontend:** HTML, CSS (Tailwind CSS), JavaScript  

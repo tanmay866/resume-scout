@@ -47,7 +47,7 @@ Resume Scout is a dynamic, fully responsive, and scalable AI-powered Resume Anal
 ### Steps
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR-USERNAME/resume-scout.git
+git clone https://github.com/tanmay866/resume-scout.git
 cd resume-scout
 ```
 
@@ -117,5 +117,5 @@ resume-scout/
 ## 📄 License
 This project is part of a Second-Year College Project.
 
-## 👨‍ Author
-[Your Name] 
+## 👨‍💻 Team
+This project was created by Tanmay, Rudra, Nainil and Tanmay.

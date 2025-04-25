@@ -145,7 +145,7 @@ resume-scout/
 This project is part of a Second-Year College Project.
 
 ## 👨‍💻 Team
-This project was created by Tanmay, Rudra, Nainil and Tanmay.
+This project was created by Tanmay, Rudra, Nainil and Manan.
 
 ## Deployment
 

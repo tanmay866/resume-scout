@@ -76,9 +76,33 @@
             if(mobileMenuButton && mobileMenu) {
                 mobileMenuButton.addEventListener('click', function() {
                     mobileMenu.classList.toggle('hidden');
+                    // Add slide animation
+                    if(!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('slide-in');
+                    } else {
+                        mobileMenu.classList.remove('slide-in');
+                    }
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!mobileMenu.classList.contains('hidden') && 
+                        !mobileMenu.contains(event.target) && 
+                        !mobileMenuButton.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('slide-in');
+                    }
+                });
+                
+                // Close mobile menu when window is resized to desktop view
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth >= 768) { // md breakpoint in Tailwind
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('slide-in');
+                    }
                 });
             }
         });
     </script>
 </body>
-</html> 
+</html>

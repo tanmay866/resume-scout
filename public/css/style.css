@@ -1,5 +1,14 @@
 /* Custom styles for Resume Scout */
 
+/* Mobile-first approach */
+:root {
+    --primary: #1E3A8A;
+    --secondary: #3B82F6;
+    --background: #FFFFFF;
+    --text: #1F2937;
+    --accent: #E5E7EB;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;

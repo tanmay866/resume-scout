@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: resume-scout
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SESSION_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+
+databases:
+  - name: resume-scout-db
+    databaseName: resume_scout
+    user: resume_scout_user
+    plan: free

@@ -1,0 +1,162 @@
+/* Mobile-specific styles for Resume Scout */
+
+/* Base mobile adjustments */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+
+/* Mobile menu improvements */
+#mobile-menu {
+  transition: all 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+#mobile-menu.slide-in {
+  max-height: 500px;
+}
+
+#mobile-menu a {
+  display: block;
+  padding: 0.75rem 0;
+}
+
+/* Touch-friendly elements */
+button, 
+a, 
+input[type="submit"],
+.btn-primary,
+.btn-secondary {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improved form elements for mobile */
+input, 
+select, 
+textarea {
+  font-size: 16px !important; /* Prevents iOS zoom on focus */
+  padding: 0.75rem !important;
+  margin-bottom: 1rem;
+  width: 100%;
+  border-radius: 0.375rem;
+}
+
+/* Responsive tables */
+table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Floating AI Chat Button adjustments */
+@media (max-width: 640px) {
+  a[href="/chatbot"] span {
+    display: none;
+  }
+  
+  a[href="/chatbot"] {
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Adjust match gauge for small screens */
+@media (max-width: 640px) {
+  .match-gauge {
+    height: 90px;
+    width: 90px;
+  }
+  
+  .match-gauge-inner {
+    font-size: 1.25rem;
+  }
+}
+
+/* Improve spacing on mobile */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.875rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  h3 {
+    font-size: 1.25rem !important;
+  }
+  
+  .py-12 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  
+  .py-8 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  
+  .px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .gap-8 {
+    gap: 1rem !important;
+  }
+}
+
+/* Fix file upload area for mobile */
+@media (max-width: 640px) {
+  .file-upload-area {
+    padding: 1.5rem 1rem !important;
+  }
+}
+
+/* Improved mobile navigation experience */
+@media (max-width: 768px) {
+  nav .container {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+}
+
+/* Fix for iOS form elements */
+@supports (-webkit-touch-callout: none) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Fix for mobile scroll issues */
+html, body {
+  overscroll-behavior-y: none;
+}
+
+/* Improve tap targets */
+nav a, footer a, .btn-primary, .btn-secondary {
+  padding: 0.5rem 0.75rem;
+}

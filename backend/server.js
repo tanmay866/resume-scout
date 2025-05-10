@@ -60,12 +60,27 @@ app.use((req, res, next) => {
   next();
 });
 
-// Root route for API information
-app.get('/', (req, res) => {
+// Database connection check
+const db = require('./config/db');
+
+// Root route for API information with database status
+app.get('/', async (req, res) => {
+  // Test database connection without blocking the response
+  let dbStatus = 'checking';
+  try {
+    const isConnected = await db.testConnection();
+    dbStatus = isConnected ? 'connected' : 'disconnected';
+  } catch (error) {
+    console.error('Error checking database connection:', error);
+    dbStatus = 'error: ' + error.message;
+  }
+
   res.status(200).json({
     name: 'Resume Scout API',
     version: '1.0.0',
     status: 'online',
+    database: dbStatus,
+    environment: process.env.NODE_ENV || 'development',
     endpoints: [
       '/api - Home API',
       '/api/auth - Authentication',
@@ -80,41 +95,62 @@ app.get('/', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
+app.get('/health', async (req, res) => {
+  let dbConnected = false;
+  try {
+    dbConnected = await db.testConnection();
+  } catch (error) {
+    console.error('Health check - Database connection error:', error);
+  }
+
+  res.status(200).json({
+    status: 'OK',
+    database: dbConnected ? 'connected' : 'disconnected',
+    timestamp: new Date().toISOString()
+  });
 });
 
-// Import routes
-const homeRoutes = require('./routes/home');
-const aboutRoutes = require('./routes/about');
-const uploadRoutes = require('./routes/upload');
-const candidateRoutes = require('./routes/candidate');
-const jobMatchingRoutes = require('./routes/jobMatching');
-const contactRoutes = require('./routes/contact');
-const faqRoutes = require('./routes/faq');
-const authRoutes = require('./routes/auth');
-const apiRoutes = require('./routes/api');
-const profileRoutes = require('./routes/profile');
-const chatbotRoutes = require('./routes/chatbot');
-const resumeAnalysisRoutes = require('./routes/resumeAnalysis');
+// Import routes with error handling
+let homeRoutes, aboutRoutes, uploadRoutes, candidateRoutes, jobMatchingRoutes;
+let contactRoutes, faqRoutes, authRoutes, apiRoutes, profileRoutes;
+let chatbotRoutes, resumeAnalysisRoutes, authMiddleware;
 
-// Global authentication middleware
-const authMiddleware = require('./middleware/auth');
-app.use(authMiddleware.checkAuth);
+try {
+  homeRoutes = require('./routes/home');
+  aboutRoutes = require('./routes/about');
+  uploadRoutes = require('./routes/upload');
+  candidateRoutes = require('./routes/candidate');
+  jobMatchingRoutes = require('./routes/jobMatching');
+  contactRoutes = require('./routes/contact');
+  faqRoutes = require('./routes/faq');
+  authRoutes = require('./routes/auth');
+  apiRoutes = require('./routes/api');
+  profileRoutes = require('./routes/profile');
+  chatbotRoutes = require('./routes/chatbot');
+  resumeAnalysisRoutes = require('./routes/resumeAnalysis');
 
-// Use routes
-app.use('/api', homeRoutes);
-app.use('/api/about', aboutRoutes);
-app.use('/api/upload-resume', uploadRoutes);
-app.use('/api/candidate', candidateRoutes);
-app.use('/api/job-matching', jobMatchingRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/faq', faqRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/data', apiRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/chatbot', chatbotRoutes);
-app.use('/api/resume-analysis', resumeAnalysisRoutes);
+  // Global authentication middleware
+  authMiddleware = require('./middleware/auth');
+  app.use(authMiddleware.checkAuth);
+
+  // Use routes
+  app.use('/api', homeRoutes);
+  app.use('/api/about', aboutRoutes);
+  app.use('/api/upload-resume', uploadRoutes);
+  app.use('/api/candidate', candidateRoutes);
+  app.use('/api/job-matching', jobMatchingRoutes);
+  app.use('/api/contact', contactRoutes);
+  app.use('/api/faq', faqRoutes);
+  app.use('/api/auth', authRoutes);
+  app.use('/api/data', apiRoutes);
+  app.use('/api/profile', profileRoutes);
+  app.use('/api/chatbot', chatbotRoutes);
+  app.use('/api/resume-analysis', resumeAnalysisRoutes);
+  
+  console.log('All routes loaded successfully');
+} catch (error) {
+  console.error('Error loading routes:', error);
+}
 
 // Socket.io connection
 io.on('connection', (socket) => {

@@ -10,10 +10,10 @@ const fs = require('fs');
 const cors = require('cors');
 
 // Load environment variables
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config();
 
 // Make sure uploads directory exists
-const uploadsDir = path.join(__dirname, '..', 'uploads');
+const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -58,6 +58,25 @@ app.use((req, res, next) => {
   console.log(`Session exists: ${!!req.session}`);
   console.log(`User in session: ${req.session && req.session.user ? 'Yes (ID: ' + req.session.user.id + ')' : 'No'}`);
   next();
+});
+
+// Root route for API information
+app.get('/', (req, res) => {
+  res.status(200).json({
+    name: 'Resume Scout API',
+    version: '1.0.0',
+    status: 'online',
+    endpoints: [
+      '/api - Home API',
+      '/api/auth - Authentication',
+      '/api/upload-resume - Resume Upload',
+      '/api/candidate - Candidate Management',
+      '/api/job-matching - Job Matching',
+      '/api/profile - User Profile',
+      '/api/chatbot - AI Chatbot',
+      '/api/resume-analysis - Resume Analysis'
+    ]
+  });
 });
 
 // Health check endpoint
